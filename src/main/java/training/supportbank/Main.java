@@ -1,13 +1,19 @@
 package training.supportbank;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import training.supportbank.file.ImportCsvFile;
 
 public class Main {
+
     public static void main(String args[]) {
+        final Logger LOGGER = LogManager.getLogger();
         Scanner in = new Scanner(System.in);
 
         while (true) {
@@ -17,7 +23,7 @@ public class Main {
                 if (command[1].equalsIgnoreCase("all")) {
                     System.out.println("Listing all records:");
 
-                    List<Account> accountList = new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\Transactions2014.csv");
+                    List<Account> accountList = getAccountsList();
 
                     for (Account acc : accountList) {
                         System.out.println(acc.getName() + ": " + new DecimalFormat("#.##").format(acc.getBalance()));
@@ -58,14 +64,21 @@ public class Main {
     }
 
     public static Account getAccount(String name) {
-        List<Account> accountList = new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\Transactions2014.csv");
-
-        for (Account acc : accountList) {
+        for (Account acc : getAccountsList()) {
             if (acc.getName().equals(name)) {
                 return acc;
             }
         }
         return null;
+    }
+
+    public static List<Account> getAccountsList() {
+        List<Account> accountList = new ArrayList<Account>();
+        
+        accountList.addAll(new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\Transactions2014.csv"));
+        accountList.addAll(new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\DodgyTransactions2015.csv"));
+
+        return accountList;
     }
 
 }
