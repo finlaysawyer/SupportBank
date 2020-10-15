@@ -1,6 +1,7 @@
 package training.supportbank.file;
 
 import java.io.FileReader;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.google.gson.JsonArray;
@@ -27,9 +28,10 @@ public class ImportJsonFile extends ImportFile {
                 JsonObject object = array.get(i).getAsJsonObject();
                 String nameTo = object.get("toAccount").getAsString();
                 String nameFrom = object.get("fromAccount").getAsString();
-                String date = object.get("date").getAsString();
                 String narrative = object.get("narrative").getAsString();
                 Float amount = object.get("amount").getAsFloat();
+                String rawDate = object.get("date").getAsString();
+                String date = new SimpleDateFormat("dd/MM/yyyy").format(new SimpleDateFormat("yyyy-MM-dd").parse(rawDate));
 
                 try {
                     accountList = processTransaction(accountList, nameTo, nameFrom, date, narrative, amount);

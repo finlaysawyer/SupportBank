@@ -12,8 +12,6 @@ import training.supportbank.file.ImportXMLNew;
 public class Main {
 
     public static void main(String args[]) {
-
-        //final Logger LOGGER = LogManager.getLogger();
         Scanner in = new Scanner(System.in);
         List<String> imports = new ArrayList<String>();
 
@@ -105,22 +103,20 @@ public class Main {
     }
 
     public static List<Account> getAccountsList(List<String> files) {
-
         List<Account> accountList = new ArrayList<Account>();
 
         for (String file : files) {
             String ext = getExtension(file);
+            String fullPath = "D:\\dev_corndel\\SupportBank\\" + file;
             if (ext.equalsIgnoreCase("csv")) {
-                accountList = new ImportCsvFile().importFile(file, accountList);
+                accountList = new ImportCsvFile().importFile(fullPath, accountList);
             } else if (ext.equalsIgnoreCase("json")) {
-                accountList = new ImportJsonFile().importFile(file, accountList);
+                accountList = new ImportJsonFile().importFile(fullPath, accountList);
             } else if (ext.equalsIgnoreCase("xml")) {
-                accountList = new ImportXMLNew().importFile(file, accountList);
+                accountList = new ImportXMLNew().importFile(fullPath, accountList);
             }
         }
-
         return accountList;
-
     }
 
     public static String getExtension(String fileName) {
@@ -129,6 +125,5 @@ public class Main {
             return fileName.substring(index + 1);
         }
         return "";
-    }
-        
+    }       
 }

@@ -8,9 +8,15 @@ import training.supportbank.Transaction;
 abstract class ImportFile {
     abstract List<Account> importFile(String fileLocation, List<Account> accountList);
 
+    private static List<Account> createAccount(List<Account> accountList, String name, Float amount, Transaction transaction) {
+        Account account = new Account(name, amount);
+        accountList.add(account);
+        account.addTransaction(transaction);
+        return accountList;
+    }
+
     public static List<Account> processTransaction(List<Account> accountList, String nameTo, String nameFrom, String date, String narrative, Float amount) {
         Transaction transaction = new Transaction(nameTo, nameFrom, date, narrative, amount);
-
         Account nameToAccount = null;
         Account nameFromAccount = null;
 
@@ -25,31 +31,22 @@ abstract class ImportFile {
             }
 
             if (nameToAccount == null) {
-                nameToAccount = new Account(nameTo, amount);
-                accountList.add(nameToAccount);
-                nameToAccount.addTransaction(transaction);
+                accountList = createAccount(accountList, nameTo, amount, transaction);
             } else {
                 nameToAccount.addToBalance(amount);
                 nameToAccount.addTransaction(transaction);
             }
 
             if (nameFromAccount == null) {
-                nameFromAccount = new Account(nameFrom, -1 * amount);
-                accountList.add(nameFromAccount);
-                nameFromAccount.addTransaction(transaction);
+                accountList = createAccount(accountList, nameFrom, -1 * amount, transaction);
             } else {
                 nameFromAccount.removeFromBalance(amount);
                 nameFromAccount.addTransaction(transaction);
             }
             
         } else {
-            nameToAccount = new Account(nameTo, amount);
-            accountList.add(nameToAccount);
-            nameToAccount.addTransaction(transaction);
-
-            nameFromAccount = new Account(nameFrom, -1 * amount);
-            accountList.add(nameFromAccount);
-            nameFromAccount.addTransaction(transaction);
+            accountList = createAccount(accountList, nameTo, amount, transaction);
+            accountList = createAccount(accountList, nameFrom, -1 * amount, transaction);
         }
         return accountList;
     }

@@ -1,5 +1,6 @@
 package training.supportbank.file;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
 
 import training.supportbank.Account;
 
@@ -25,8 +27,6 @@ public class ImportXMLNew extends ImportFile {
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(records);
             doc.getDocumentElement().normalize();
-
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
     
             NodeList nodeList = doc.getElementsByTagName("SupportTransaction");
     
@@ -34,9 +34,15 @@ public class ImportXMLNew extends ImportFile {
                 Node node = nodeList.item(i);
                 Element field = (Element) node;
 
-                String date = field.getAttribute("Date").toString();
-                String narrative = field.getElementsByTagName("Description").item(0).getTextContent();
-                Float amount = Float.parseFloat(field.getElementsByTagName("Value").item(0).getTextContent());
+                String rawDate = field.getAttribute("Date").toString();
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(sdf.parse("01/01/1900"));
+                cal.add(Calendar.DATE, Integer.parseInt(rawDate));
+                String date = sdf.format(cal.getTime());
+
+                String narrative = getContent(field, "Description");
+                Float amount = Float.parseFloat(getContent(field, "Value"));
                 String nameFrom = "";
                 String nameTo = "";
 
@@ -45,8 +51,8 @@ public class ImportXMLNew extends ImportFile {
                 for (int x = 0; x < subNodeList.getLength(); x++) { 
                     Node subNode = subNodeList.item(x);
                     Element subField = (Element) subNode;
-                    nameFrom = subField.getElementsByTagName("From").item(0).getTextContent();
-                    nameTo = subField.getElementsByTagName("To").item(0).getTextContent();
+                    nameFrom = getContent(subField, "From");
+                    nameTo = getContent(subField, "To");
                 }
 
                 try {
@@ -55,14 +61,15 @@ public class ImportXMLNew extends ImportFile {
                     LOGGER.info("Could not import record due to incorrect formatting", e);
                     continue;
                 }
-
             }
-                
         } catch (Exception e) {
             LOGGER.info("Couldn't parse XML", e);
         }
-        
-        return accountList;
-        
+        return accountList;        
     }
+
+    public String getContent(Element field, String name) {
+        return field.getElementsByTagName(name).item(0).getTextContent();
+    }
+
 }
