@@ -17,7 +17,14 @@ public class Main {
         Scanner in = new Scanner(System.in);
 
         while (true) {
-            String command[] = in.nextLine().split(" ");
+
+            String command[] = new String[] { "" };
+            
+            try {
+                command = in.nextLine().split(" ");
+            } catch(Exception e) {
+                System.out.println("No input");
+            }
 
             if (command[0].equalsIgnoreCase("list")) {
                 if (command[1].equalsIgnoreCase("all")) {
@@ -75,8 +82,8 @@ public class Main {
     public static List<Account> getAccountsList() {
         List<Account> accountList = new ArrayList<Account>();
         
-        accountList.addAll(new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\Transactions2014.csv"));
-        accountList.addAll(new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\DodgyTransactions2015.csv"));
+        accountList = new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\Transactions2014.csv", accountList);
+        accountList = new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\DodgyTransactions2015.csv", accountList);
 
         return accountList;
     }

@@ -2,7 +2,6 @@ package training.supportbank.file;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.opencsv.CSVReader;
@@ -19,9 +18,8 @@ public class ImportCsvFile implements ImportFile {
     final Logger LOGGER = LogManager.getLogger();
 
     @Override
-    public List<Account> importFile(String fileLocation) {
+    public List<Account> importFile(String fileLocation, List<Account> accountList) {
         CSVReader records = null;
-        List<Account> accountList = new ArrayList<Account>();
 
         try {
             records = new CSVReader(new FileReader(fileLocation));
