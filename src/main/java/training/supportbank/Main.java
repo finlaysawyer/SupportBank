@@ -30,16 +30,25 @@ public class Main {
                 } else if (command.length >= 3) {
                     String nameTarget = String.join(" ", sliceArray(command, 1, 3));
                     System.out.println("Listing transactions for " + nameTarget + ":");
-                    System.out.println("Date | From | To | Narrative | Amount");
+                    
+                    if (getAccount(nameTarget) != null) {
+                        System.out.println("Date | From | To | Narrative | Amount");
 
-                    for (Transaction trans : getAccount(nameTarget).getTransactions()) {
-                        System.out.println(trans.getReadableTransaction());
+                        for (Transaction trans : getAccount(nameTarget).getTransactions()) {
+                            System.out.println(trans.getReadableTransaction());
+                        }
+                    } else {
+                        System.out.println("No transactions were found for " + nameTarget);
                     }
+                } else {
+                    System.out.println("Please specify a valid sub-command.");
                 }
 
             } else if (command[0].equalsIgnoreCase("exit")) {
                 in.close();
                 System.exit(0);
+            } else {
+                System.out.println("That command does not exist.");
             }
         }
     }
@@ -63,7 +72,7 @@ public class Main {
 
                 if (!accountList.isEmpty()) {
                     for (int i = 0; i < accountList.size(); i++) {
-                        if (accountList.get(i).getName().equals(nameTo)) { // If account already exists
+                        if (accountList.get(i).getName().equals(nameTo)) {
                             nameToAccount = accountList.get(i);
                         }
                         if (accountList.get(i).getName().equals(nameFrom)) {

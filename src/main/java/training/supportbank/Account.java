@@ -3,6 +3,9 @@ package training.supportbank;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Getter;
+
+@Getter
 public class Account {
     private String name;
     private float balance;
@@ -11,18 +14,6 @@ public class Account {
     public Account(String name, float balance) {
         this.name = name;
         this.balance = balance;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public float getBalance() {
-        return balance;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
     }
 
     public void addToBalance(float add) {

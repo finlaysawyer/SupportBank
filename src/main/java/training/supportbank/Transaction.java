@@ -1,5 +1,8 @@
 package training.supportbank;
 
+import lombok.Getter;
+
+@Getter
 public class Transaction {
   private String to;
   private String from;
