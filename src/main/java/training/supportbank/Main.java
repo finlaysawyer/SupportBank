@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 import training.supportbank.file.ImportCsvFile;
 import training.supportbank.file.ImportJsonFile;
-import training.supportbank.file.ImportXMLNew;
+import training.supportbank.file.ImportXmlFile;
 
 public class Main {
 
@@ -113,7 +113,7 @@ public class Main {
             } else if (ext.equalsIgnoreCase("json")) {
                 accountList = new ImportJsonFile().importFile(fullPath, accountList);
             } else if (ext.equalsIgnoreCase("xml")) {
-                accountList = new ImportXMLNew().importFile(fullPath, accountList);
+                accountList = new ImportXmlFile().importFile(fullPath, accountList);
             }
         }
         return accountList;

@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 
 import training.supportbank.Account;
 
-public class ImportXMLNew extends ImportFile {
+public class ImportXmlFile extends ImportFile {
 
     final Logger LOGGER = LogManager.getLogger();
 
