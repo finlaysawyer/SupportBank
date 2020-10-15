@@ -31,7 +31,7 @@ public class Main {
                 if (command[1].equalsIgnoreCase("all")) { // List all balances
 
                     System.out.println("Listing all records:");
-                    List<Account> accountList = getAccountsList();
+                    List<Account> accountList = getAccountsList(imports);
 
                     for (Account acc : accountList) {
                         System.out.println(acc.getName() + ": " + new DecimalFormat("#.##").format(acc.getBalance()));
@@ -42,9 +42,9 @@ public class Main {
                     String nameTarget = String.join(" ", sliceArray(command, 1, 3));
                     System.out.println("Listing transactions for " + nameTarget + ":");
                     
-                    if (getAccount(nameTarget) != null) {
+                    if (getAccount(nameTarget, imports) != null) {
                         System.out.println("Date | From | To | Narrative | Amount");
-                        for (Transaction trans : getAccount(nameTarget).getTransactions()) {
+                        for (Transaction trans : getAccount(nameTarget, imports).getTransactions()) {
                             System.out.println(trans.getReadableTransaction());
                         }
                     } else {
@@ -63,6 +63,7 @@ public class Main {
 
                     if (ext.equalsIgnoreCase("csv") || ext.equalsIgnoreCase("json") || ext.equalsIgnoreCase("xml")) {
                         imports.add(command[1]);
+                        System.out.println("File imported");
                     } else {
                         System.out.println("Invalid file format");
                     }
@@ -93,8 +94,8 @@ public class Main {
         return slice;
     }
 
-    public static Account getAccount(String name) {
-        for (Account acc : getAccountsList()) {
+    public static Account getAccount(String name, List<String> imports) {
+        for (Account acc : getAccountsList(imports)) {
             if (acc.getName().equals(name)) {
                 return acc;
             }
@@ -102,17 +103,7 @@ public class Main {
         return null;
     }
 
-    public static List<Account> getAccountsList() {
-        List<Account> accountList = new ArrayList<Account>();
-        
-        accountList = new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\Transactions2014.csv", accountList);
-        accountList = new ImportCsvFile().importFile("D:\\dev_corndel\\SupportBank\\DodgyTransactions2015.csv", accountList);
-        accountList = new ImportJsonFile().importFile("D:\\dev_corndel\\SupportBank\\Transactions2013.json", accountList);
-
-        return accountList;
-    }
-
-    public static List<Account> getAccountsListNew(List<String> files) {
+    public static List<Account> getAccountsList(List<String> files) {
 
         List<Account> accountList = new ArrayList<Account>();
 
