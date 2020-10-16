@@ -19,7 +19,7 @@ public class Main {
 
         while (true) {
 
-            String command[] = new String[] { "" };
+            String command[] = new String[] {""};
             
             try {
                 command = in.nextLine().split(" ");
@@ -31,7 +31,6 @@ public class Main {
 
                 if (command[1].equalsIgnoreCase("all")) { // List all balances
 
-                    //System.out.println("Name | Balance");
                     List<Account> accountList = getAccountsList(imports);
 
                     List<List<String>> rows = new ArrayList<List<String>>();
@@ -55,8 +54,8 @@ public class Main {
                     if (getAccount(nameTarget, imports) != null) {
 
                         List<List<String>> rows = new ArrayList<List<String>>();
-                        rows.add( Arrays.asList("Date", "Type", "Net", "Narrative") );
-                        rows.add( Arrays.asList("----------", "--------", "-----", "-------------") );
+                        rows.add( Arrays.asList("Date", "Type", "Person", "Net", "Narrative") );
+                        rows.add( Arrays.asList("----------", "--------", "---------", "------", "-------------") );
                         for (Transaction trans : getAccount(nameTarget, imports).getTransactions()) {
                             rows.add(trans.getReadableTransaction(nameTarget));
                         }

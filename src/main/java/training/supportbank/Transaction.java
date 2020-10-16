@@ -23,14 +23,17 @@ public class Transaction {
 
   public List<String> getReadableTransaction(String name) {
     String type = null;
+    String nameTarget = null;
     Float net = amount;
     if (from.equals(name)) {
       type = "Outgoing";
       net = -1 * amount;
+      nameTarget = to;
     } else {
       type = "Incoming";
+      nameTarget = from;
     }
-    return Arrays.asList(date, type, new DecimalFormat("#.##").format(net), narrative);
+    return Arrays.asList(date, type, nameTarget, new DecimalFormat("#.##").format(net), narrative);
 
   }
 
