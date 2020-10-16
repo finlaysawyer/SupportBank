@@ -58,12 +58,12 @@ public class ImportXmlFile extends ImportFile {
                 try {
                     accountList = processTransaction(accountList, nameTo, nameFrom, date, narrative, amount);
                 } catch (NumberFormatException e) {
-                    LOGGER.info("Could not import record due to incorrect formatting", e);
+                    LOGGER.error("Could not import record due to incorrect formatting", e);
                     continue;
                 }
             }
         } catch (Exception e) {
-            LOGGER.info("Couldn't parse XML", e);
+            LOGGER.error("Couldn't parse XML", e);
         }
         return accountList;        
     }

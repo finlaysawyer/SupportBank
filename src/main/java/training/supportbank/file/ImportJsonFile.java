@@ -36,7 +36,7 @@ public class ImportJsonFile extends ImportFile {
                 try {
                     accountList = processTransaction(accountList, nameTo, nameFrom, date, narrative, amount);
                 } catch (NumberFormatException e) {
-                    LOGGER.info("Could not import record due to incorrect formatting", e);
+                    LOGGER.error("Could not import record due to incorrect formatting", e);
                     continue;
                 }
             }

@@ -8,11 +8,15 @@ import java.util.List;
 
 import com.opencsv.CSVWriter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import training.supportbank.Account;
 import training.supportbank.Transaction;
 
 public class ExportCsvFile implements ExportFile {
 
+    final Logger LOGGER = LogManager.getLogger();
     private static final String EXPORT_FILE = "./exported-transactions.csv";
 
     @Override
@@ -38,7 +42,7 @@ public class ExportCsvFile implements ExportFile {
             }
             csvWriter.close();
         } catch (IOException e) {
-            System.out.println("Couldn't generate file or encountered a formatting exception: " + e);
+            LOGGER.error("Couldn't generate file or encountered a formatting exception: " + e);
         }
     }
 }

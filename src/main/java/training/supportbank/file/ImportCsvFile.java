@@ -29,14 +29,14 @@ public class ImportCsvFile extends ImportFile {
                 try {
                     accountList = processTransaction(accountList, record[2], record[1], record[0], record[3], Float.parseFloat(record[4]));
                 } catch (NumberFormatException e) {
-                    LOGGER.info("Could not import record due to incorrect formatting", e);
+                    LOGGER.error("Could not import record due to incorrect formatting", e);
                     continue;
                 }
             }
             records.close();
 
         } catch (IOException | NumberFormatException | CsvValidationException e) {
-            System.out.println("Couldn't find file or encountered a formatting exception: " + e);
+            LOGGER.error("Couldn't find file or encountered a formatting exception: " + e);
         }
         return accountList;
     }
