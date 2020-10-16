@@ -107,7 +107,7 @@ public class Main {
 
         for (String file : files) {
             String ext = getExtension(file);
-            String fullPath = "D:\\dev_corndel\\SupportBank\\" + file;
+            String fullPath = "src\\main\\resources\\" + file;
             if (ext.equalsIgnoreCase("csv")) {
                 accountList = new ImportCsvFile().importFile(fullPath, accountList);
             } else if (ext.equalsIgnoreCase("json")) {
