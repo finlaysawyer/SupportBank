@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import training.supportbank.file.ExportCsvFile;
 import training.supportbank.file.ImportCsvFile;
 import training.supportbank.file.ImportJsonFile;
 import training.supportbank.file.ImportXmlFile;
@@ -72,8 +73,8 @@ public class Main {
                 }
 
             } else if (command[0].equalsIgnoreCase("export")) { // Export Transactions to File
-                in.close();
-                System.exit(0);
+                new ExportCsvFile().exportFile(getAccountsList(imports));
+                System.out.println("Exported transactions.");
 
             } else if (command[0].equalsIgnoreCase("exit")) { // Exit
                 in.close();

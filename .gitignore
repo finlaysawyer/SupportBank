@@ -59,3 +59,5 @@ dependency-reduced-pom.xml
 .project
 .idea
 .settings/
+
+exported-transactions.csv
