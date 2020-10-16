@@ -1,6 +1,9 @@
 package training.supportbank;
 
 import lombok.Getter;
+import java.util.Arrays;
+import java.util.List;
+import java.text.DecimalFormat;
 
 @Getter
 public class Transaction {
@@ -18,8 +21,17 @@ public class Transaction {
     this.amount = amount;
   }
 
-  public String getReadableTransaction() {
-    return date + " | " + from + " | " + to + " | " + narrative + " | " + amount;
+  public List<String> getReadableTransaction(String name) {
+    String type = null;
+    Float net = amount;
+    if (from.equals(name)) {
+      type = "Outgoing";
+      net = -1 * amount;
+    } else {
+      type = "Incoming";
+    }
+    return Arrays.asList(date, type, new DecimalFormat("#.##").format(net), narrative);
+
   }
 
 }

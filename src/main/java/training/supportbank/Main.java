@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Arrays;
 
 import training.supportbank.file.ExportCsvFile;
 import training.supportbank.file.ImportCsvFile;
@@ -30,12 +31,21 @@ public class Main {
 
                 if (command[1].equalsIgnoreCase("all")) { // List all balances
 
-                    System.out.println("Listing all records:");
+                    //System.out.println("Name | Balance");
                     List<Account> accountList = getAccountsList(imports);
 
+                    List<List<String>> rows = new ArrayList<List<String>>();
+                    rows.add( Arrays.asList("Name", "Balance") );
+                    rows.add( Arrays.asList("-------", "-------") );
+
                     for (Account acc : accountList) {
-                        System.out.println(acc.getName() + ": " + new DecimalFormat("#.##").format(acc.getBalance()));
+                        List<String> cols = new ArrayList<String>();
+                        cols.add(acc.getName());
+                        cols.add(new DecimalFormat("#.##").format(acc.getBalance()));
+                        rows.add(cols);
                     }
+
+                    printRows(rows);
 
                 } else if (command.length >= 3) { // List user transactions
 
@@ -43,10 +53,15 @@ public class Main {
                     System.out.println("Listing transactions for " + nameTarget + ":");
                     
                     if (getAccount(nameTarget, imports) != null) {
-                        System.out.println("Date | From | To | Narrative | Amount");
+
+                        List<List<String>> rows = new ArrayList<List<String>>();
+                        rows.add( Arrays.asList("Date", "Type", "Net", "Narrative") );
+                        rows.add( Arrays.asList("----------", "--------", "-----", "-------------") );
                         for (Transaction trans : getAccount(nameTarget, imports).getTransactions()) {
-                            System.out.println(trans.getReadableTransaction());
+                            rows.add(trans.getReadableTransaction(nameTarget));
                         }
+                        printRows(rows);
+
                     } else {
                         System.out.println("No transactions were found for " + nameTarget);
                     }
@@ -126,5 +141,29 @@ public class Main {
             return fileName.substring(index + 1);
         }
         return "";
-    }       
+    }
+
+    public static Integer getHighestLen(List<List<String>> rows, Integer colIndex) {
+        Integer lenLargest = 0;
+        for (List<String> cols : rows) {
+            Integer lenCurrent = cols.get(colIndex).length();
+            if (lenCurrent > lenLargest) {
+                lenLargest = lenCurrent;
+            }
+        }
+        return lenLargest;
+    }
+
+    public static void printRows(List<List<String>> rows) {
+        for (List<String> row : rows) {
+            String send = "";
+            Integer index = 0;
+            for (String col : row) {
+                send += (col + new String(new char[getHighestLen(rows, index) - col.length()]).replace("\0", " ") + " | ");
+                index += 1;
+            }
+            System.out.print(send.substring(0, send.length() - 3) + "\n");
+        }
+    }
+ 
 }
